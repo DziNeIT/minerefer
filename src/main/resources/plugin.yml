@@ -1,0 +1,12 @@
+name: MineRefer
+description: Allows referrals with rewards on a Bukkit server
+version: 1.0.0
+main: pw.ollie.minerefer.MineRefer
+
+commands:
+    referrer:
+        description: Allows specifying a player who referred the sender to the server
+
+permissions:
+    minerefer.referrer:
+        description: Allows usage of /referrer
