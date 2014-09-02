@@ -37,7 +37,7 @@ public final class MineRefer extends JavaPlugin {
         FileConfiguration config = getConfig();
         ConfigurationSection rewards = config.getConfigurationSection("referral-rewards");
         for (String material : rewards.getKeys(false)) {
-            Material mat = Material.valueOf(material);
+            Material mat = getMaterial(material);
             if (mat == null) {
                 logger.warning("Invalid material specified in rewards config: " + material);
                 continue;
@@ -88,6 +88,21 @@ public final class MineRefer extends JavaPlugin {
 
     public boolean hasReferred(UUID uuid) {
         return referred.contains(uuid);
+    }
+
+    @SuppressWarnings("deprecation")
+    private Material getMaterial(String arg) {
+        Material mat = Material.getMaterial(arg);
+        if (mat == null) {
+            mat = Material.valueOf(arg);
+        }
+        if (mat == null) {
+            try {
+                mat = Material.getMaterial(Integer.parseInt(arg));
+            } catch (NumberFormatException ignore) {
+            }
+        }
+        return mat;
     }
 
     private void ensureExists(File file, boolean directory) {
