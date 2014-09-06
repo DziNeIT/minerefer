@@ -1,6 +1,4 @@
-package pw.ollie.minerefer.command;
-
-import pw.ollie.minerefer.MineRefer;
+package pw.ollie.minerefer;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -9,10 +7,10 @@ import org.bukkit.entity.Player;
 
 import static org.bukkit.ChatColor.*;
 
-public class ReferCommandExecutor implements CommandExecutor {
+public class ReferrerCommand implements CommandExecutor {
     private final MineRefer plugin;
 
-    public ReferCommandExecutor(MineRefer plugin) {
+    public ReferrerCommand(MineRefer plugin) {
         this.plugin = plugin;
     }
 

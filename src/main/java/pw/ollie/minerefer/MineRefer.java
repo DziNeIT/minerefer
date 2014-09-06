@@ -7,9 +7,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
 
-import pw.ollie.minerefer.command.ReferCommandExecutor;
-
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -21,6 +18,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class MineRefer extends JavaPlugin {
     private final List<UUID> referred = new ArrayList<>();
     private final List<ItemStack> rewards = new ArrayList<>();
+
+    private FileConfiguration configuration = null;
+    private ConfigurationSection rewardsSec = null;
 
     /**
      * The plugin {@link Logger} instance.
@@ -34,17 +34,17 @@ public final class MineRefer extends JavaPlugin {
         ensureExists(getDataFolder(), true);
         saveResource("config.yml", false);
 
-        FileConfiguration config = getConfig();
-        ConfigurationSection rewards = config.getConfigurationSection("referral-rewards");
-        for (String material : rewards.getKeys(false)) {
+        configuration = getConfig();
+        rewardsSec = configuration.getConfigurationSection("referral-rewards");
+        for (String material : rewardsSec.getKeys(false)) {
             Material mat = getMaterial(material);
             if (mat == null) {
                 logger.warning("Invalid material specified in rewards config: " + material);
                 continue;
             }
 
-            int amount = rewards.getInt(material);
-            this.rewards.add(new ItemStack(mat, amount));
+            int amount = rewardsSec.getInt(material);
+            rewards.add(new ItemStack(mat, amount));
         }
 
         File dataFile = new File(getDataFolder(), "data.yml");
@@ -58,7 +58,7 @@ public final class MineRefer extends JavaPlugin {
             }
         }
 
-        getCommand("refer").setExecutor(new ReferCommandExecutor(this));
+        getCommand("refer").setExecutor(new ReferrerCommand(this));
     }
 
     @Override
